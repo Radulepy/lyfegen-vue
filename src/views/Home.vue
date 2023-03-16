@@ -1,6 +1,9 @@
 <template>
     <div>
+        <!-- Home Title -->
         <div class="text-center lead display-6" style="margin-top: 250px;">Home</div>
+
+        <!-- Menu Items -->
         <div class="d-flex align-items-center justify-content-center">
             <div class="p-2 m-2 shadow rounded-2">
                 <router-link to="contracts">
