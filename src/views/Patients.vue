@@ -1,19 +1,23 @@
 <template>
     <div>
+        <!-- Title -->
         <div class="text-center lead display-6" style="margin-top: 250px;">Patients</div>
+
+        <!-- Menu Items -->
         <div class="d-flex align-items-center justify-content-center">
             <div class="p-2 m-2 shadow rounded-2">
-                <router-link to="contracts">
+                <router-link to="new-patient">
                     <a class="btn btn-info"> Create New Patient </a>
                 </router-link>
             </div>
             <div class="p-2 m-2 shadow rounded-2">
-                <router-link to="patients">
+                <router-link to="all-patients">
                     <a class="btn btn-info"> List All Patients </a>
                 </router-link>
             </div>
-
         </div>
+
+        <!-- GO Back Button -->
         <div>
             <div class="d-flex align-items-center justify-content-center">
                 <router-link to="/">
