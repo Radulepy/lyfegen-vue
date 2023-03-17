@@ -12,12 +12,7 @@
             </div>
             <div class="p-2 m-2 shadow rounded-2">
                 <router-link to="all-contracts">
-                    <a class="btn btn-primary"> List All Contracts </a>
-                </router-link>
-            </div>
-            <div class="p-2 m-2 shadow rounded-2">
-                <router-link to="contract-status">
-                    <a class="btn btn-primary"> Get Contract Status </a>
+                    <a class="btn btn-primary"> List All Contracts Status </a>
                 </router-link>
             </div>
         </div>
