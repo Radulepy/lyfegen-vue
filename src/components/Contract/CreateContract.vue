@@ -2,10 +2,11 @@
   <div>
     <h1 class="lead display-6 text-center">Create New Contract</h1>
     <div class="container my-4">
-      <!-- {{ this.contract }} -->
       <div class="row justify-content-center">
         <div class="col-md-6">
           <form ref="form">
+
+            <!-- First Party Selection -->
             <div class="mb-3">
               <label for="name" class="form-label">First Party:</label>
               <input type="text" class="form-control" id="name" name="name" v-model="this.contract.party"
@@ -15,6 +16,7 @@
               </div>
             </div>
 
+            <!-- Patient selection -->
             <label class="form-label" for="patient-select">Select a patient:</label>
             <select class="form-select" id="patient-select" name="patient-select" v-model="this.contract.patientId"
               @change="findPatientById(this.contract.patientId)">
@@ -24,6 +26,7 @@
               </option>
             </select>
 
+            <!-- Products section -->
             <div v-if="this.contract.patientId !== ''">
               <div v-for="(product, index) in this.contract.product" :key="index" class="my-4">
                 <h3>{{ product.name }}</h3>
@@ -39,6 +42,7 @@
               </div>
             </div>
 
+            <!-- Unit selection -->
             <div class="mb-3" v-if="this.contract.product.length !== 0">
               <label for="unit-select" class="form-label">Select Unit</label>
               <select class="form-select" id="unit-select" v-model="this.contract.productUnits"
@@ -49,24 +53,24 @@
               </select>
             </div>
 
+            <!-- Patient data update alert -->
             <div class="mb-3 mt-3" v-else>
               <div class="alert alert-danger" role="alert">
                 Update Patient data to create a contract!
               </div>
             </div>
 
+            <!-- Base price, Payable and Refundable section -->
             <div v-if="this.contract.basePrice !== 0 && this.contract.product.length !== 0">
               <div class="form-group">
                 <label for="basePrice">Base Price</label>
                 <input type="text" class="form-control" id="basePrice" v-model="this.contract.basePrice" readonly
                   disabled>
               </div>
-
               <div class="form-group">
                 <label for="payable">Payable</label>
                 <input type="text" class="form-control" id="payable" v-model="this.contract.payable" readonly disabled>
               </div>
-
               <div class="form-group">
                 <label for="refundable">Refundable</label>
                 <input type="text" class="form-control" id="refundable" v-model="this.contract.refundable" readonly
@@ -74,6 +78,7 @@
               </div>
             </div>
 
+            <!-- Create Contract Button -->
             <button v-if="this.contract.product.length !== 0 && this.contract.productUnits !== 0" type="button"
               class="btn btn-success px-5 mt-3" @click="this.validateContract">Create
               Contract</button>
@@ -116,7 +121,6 @@ export default {
         if (categoryArray[i].name == productName) {
           console.log(categoryArray[i])
           return (categoryArray[i]);
-
         }
       }
     },
@@ -130,7 +134,7 @@ export default {
 
       const { units } = product;
       const basePrice = parseFloat(units[this.contract.productUnits]);
-      console.log("Base price" + basePrice)
+
       let payable = 0;
       let refundable = 0;
 
@@ -140,13 +144,22 @@ export default {
       } else if (patient.os_months === -1 || patient.os_months < 12) {
         payable = basePrice * 0.3;
         refundable = basePrice * 0.7;
-      } else if (patient.pfs_months >= 9) {
-        payable = basePrice * 0.85;
-        refundable = basePrice * 0.15;
-      } else if (patient.pfs_months === -1 || patient.pfs_months < 9) {
-        payable = basePrice * 0.4;
-        refundable = basePrice * 0.6;
+      } else {
+        if (patient.pfs_months >= 9) {
+          payable = basePrice * 0.85;
+          refundable = basePrice * 0.15;
+        } else if (patient.pfs_months === -1 || patient.pfs_months < 9) {
+          payable = basePrice * 0.4;
+          refundable = basePrice * 0.6;
+        }
       }
+
+      //* base on progression?:
+      // if (patient.progression === 'progression') {
+      //   pricingType = (patient.os_months >= 12) ? 'pricing_1' : 'pricing_2';
+      // } else {
+      //   pricingType = (patient.pfs_months >= 9) ? 'pricing_3' : 'pricing_4';
+      // }
 
       this.contract.basePrice = basePrice.toFixed(2);
       this.contract.payable = payable.toFixed(2);
@@ -200,11 +213,9 @@ export default {
   },
   beforeMount() {
     this.products = products.products;
-    console.log(products.products);
 
     axios.get(this.enrolledPatientsURL)
       .then((res) => {
-        console.log(res);
         this.enrolledPatients = res.data;
       })
 
