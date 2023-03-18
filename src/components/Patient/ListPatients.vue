@@ -12,6 +12,7 @@
                     <th>Product Name</th>
                     <th>OS Months</th>
                     <th>PFS Months</th>
+                    <th>C. Stage</th>
                     <th>Created At</th>
                     <th>Updated At</th>
                     <th>Edit</th>
@@ -51,6 +52,10 @@
                     <td v-if="!patient.editing">{{ patient.pfs_months }}</td>
                     <td v-else>
                         <input v-model="patient.pfs_months" type="number" class="form-control">
+                    </td>
+                    <td v-if="!patient.editing">{{ patient.cancer_stage }}</td>
+                    <td v-else>
+                        <input v-model="patient.cancer_stage" type="number" class="form-control">
                     </td>
                     <td>{{ patient.created_at }}</td>
                     <td>{{ patient.updated_at }}</td>
